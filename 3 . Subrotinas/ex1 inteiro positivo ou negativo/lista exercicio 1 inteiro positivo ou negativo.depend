@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1677885598 source:c:\users\7788452\documents\codeblocks\lista exercicio 1 inteiro positivo ou negativo\main.cpp
+	<iostream>
+	<locale.h>
+
