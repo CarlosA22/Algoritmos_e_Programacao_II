@@ -1,6 +1,6 @@
 /**
     Estrutura inicial para um jogo de labirinto
-    versÃ£o: 0.1 (Felski)
+    versão: 0.1 (Felski)
 */
 #include <iostream>
 #include<windows.h>
@@ -10,21 +10,21 @@ using namespace std;
 
 int main()
 {
-    ///ALERTA: Nï¿½O MODIFICAR O TRECHO DE Cï¿½DIGO, A SEGUIR.
-        //INICIO: COMANDOS PARA QUE O CURSOR Nï¿½O FIQUE PISCANDO NA TELA
+    ///ALERTA: N O MODIFICAR O TRECHO DE C DIGO, A SEGUIR.
+        //INICIO: COMANDOS PARA QUE O CURSOR N O FIQUE PISCANDO NA TELA
         HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
         CONSOLE_CURSOR_INFO     cursorInfo;
         GetConsoleCursorInfo(out, &cursorInfo);
         cursorInfo.bVisible = false; // set the cursor visibility
         SetConsoleCursorInfo(out, &cursorInfo);
-        //FIM: COMANDOS PARA QUE O CURSOR Nï¿½O FIQUE PISCANDO NA TELA
-        //INï¿½CIO: COMANDOS PARA REPOSICIONAR O CURSOR NO INï¿½CIO DA TELA
+        //FIM: COMANDOS PARA QUE O CURSOR N O FIQUE PISCANDO NA TELA
+        //IN CIO: COMANDOS PARA REPOSICIONAR O CURSOR NO IN CIO DA TELA
         short int CX=0, CY=0;
         COORD coord;
         coord.X = CX;
         coord.Y = CY;
-        //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO INï¿½CIO DA TELA
-    ///ALERTA: Nï¿½O MODIFICAR O TRECHO DE Cï¿½DIGO, ACIMA.
+        //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO IN CIO DA TELA
+    ///ALERTA: N O MODIFICAR O TRECHO DE C DIGO, ACIMA.
 
     int m[10][10]={ 1,1,1,1,1,1,1,1,1,1,
                     1,0,0,0,0,0,0,0,0,1,
@@ -37,13 +37,13 @@ int main()
                     1,0,0,0,0,0,0,0,0,1,
                     1,1,1,1,1,1,1,1,1,1 };
 
-    //Posiï¿½ï¿½o inicial do personagem no console
+    //Posi  o inicial do personagem no console
     int x=5, y=5;
-    //Variï¿½vel para tecla precionada
+    //Vari vel para tecla precionada
     char tecla;
 
     while(true){
-        ///Posiciona a escrita no inÃ­cio do console
+        ///Posiciona a escrita no início do console
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 
         ///Imprime o jogo: mapa e personagem.
@@ -83,7 +83,7 @@ int main()
          }
 
         
-    } //fim do laÃ§o do jogo
+    } //fim do laço do jogo
 
     return 0;
 } //fim main
