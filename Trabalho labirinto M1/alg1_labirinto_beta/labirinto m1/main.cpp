@@ -106,30 +106,52 @@ int main()
                             }
                         }
                         cout << "\n";
-                        
+
                     } // fim for mapa
-                        
-                    /// executa os movimentos
+
+                    // executa os movimentos
                     if (_kbhit())
                     {
-                        tecla = getch();
+                        tecla = _getch();
+                        int novo_x = x, novo_y = y;
+                        // adiciona variáveis para armazenar coordenadas de caixa adjacente ao jogador
+                        int caixa_x, caixa_y;
+
+                        // define coordenadas de caixa com base na direção do movimento
                         switch (tecla)
                         {
                         case 72:
                         case 'w': /// cima
-                            x--;
+                            caixa_x = novo_x - 1;
+                            caixa_y = novo_y;
+                            novo_x--;
                             break;
                         case 80:
                         case 's': /// baixo
-                            x++;
+                            caixa_x = novo_x + 1;
+                            caixa_y = novo_y;
+                            novo_x++;
                             break;
                         case 75:
                         case 'a': /// esquerda
-                            y--;
+                            caixa_x = novo_x;
+                            caixa_y = novo_y - 1;
+                            novo_y--;
                             break;
                         case 77:
                         case 'd': /// direita
-                            y++;
+                            caixa_x = novo_x;
+                            caixa_y = novo_y + 1;
+                            novo_y++;
+                            break;
+                        }
+
+                        // checa se a nova posição colide com a parede.
+
+                        if (ag1[novo_x][novo_y] != 1)
+                        {
+                            x = novo_x;
+                            y = novo_y;
                         }
                     }
                 }
@@ -144,13 +166,13 @@ int main()
                                  0, 0, 0, 1, 0, 0, 1, 0,
                                  1, 1, 1, 1, 0, 0, 1, 0,
                                  1, 0, 0, 1, 0, 1, 1, 0,
-                                 1, 0, 0, 0, 0, 0, 1, 0,
-                                 1, 1, 1, 0, 0, 0, 1, 1,
-                                 0, 0, 1, 1, 0, 0, 0, 1,
+                                 1, 0, 0, 0, 2, 0, 1, 0,
+                                 1, 1, 1, 0, 0, 2, 1, 1,
+                                 0, 0, 1, 1, 3, 0, 3, 1,
                                  0, 0, 0, 1, 1, 1, 1, 1};
 
                 // Posi  o inicial do personagem no console
-                int x = 5, y = 5;
+                int x = 5, y = 1;
                 // Vari vel para tecla precionada
                 char tecla;
 
@@ -191,27 +213,49 @@ int main()
                         cout << "\n";
                     } // fim for mapa
 
-                    /// executa os movimentos
+                    // executa os movimentos
                     if (_kbhit())
                     {
-                        tecla = getch();
+                        tecla = _getch();
+                        int novo_x = x, novo_y = y;
+                        // adiciona variáveis para armazenar coordenadas de caixa adjacente ao jogador
+                        int caixa_x, caixa_y;
+
+                        // define coordenadas de caixa com base na direção do movimento
                         switch (tecla)
                         {
                         case 72:
                         case 'w': /// cima
-                            x--;
+                            caixa_x = novo_x - 1;
+                            caixa_y = novo_y;
+                            novo_x--;
                             break;
                         case 80:
                         case 's': /// baixo
-                            x++;
+                            caixa_x = novo_x + 1;
+                            caixa_y = novo_y;
+                            novo_x++;
                             break;
                         case 75:
                         case 'a': /// esquerda
-                            y--;
+                            caixa_x = novo_x;
+                            caixa_y = novo_y - 1;
+                            novo_y--;
                             break;
                         case 77:
                         case 'd': /// direita
-                            y++;
+                            caixa_x = novo_x;
+                            caixa_y = novo_y + 1;
+                            novo_y++;
+                            break;
+                        }
+
+                        // checa se a nova posição colide com a parede.
+
+                        if (ag8[novo_x][novo_y] != 1)
+                        {
+                            x = novo_x;
+                            y = novo_y;
                         }
                     }
                 }
@@ -224,16 +268,16 @@ int main()
                 int ag13[10][8] = {1, 1, 1, 0, 0, 0, 0, 0,
                                    1, 0, 1, 1, 0, 0, 0, 0,
                                    1, 0, 0, 1, 1, 0, 0, 0,
-                                   1, 0, 0, 0, 1, 1, 0, 0,
-                                   1, 0, 0, 0, 0, 1, 1, 0,
-                                   1, 1, 0, 0, 0, 0, 1, 1,
-                                   0, 1, 1, 0, 0, 0, 0, 1,
-                                   0, 0, 1, 1, 1, 0, 0, 1,
-                                   0, 0, 0, 0, 1, 0, 0, 1,
+                                   1, 0, 2, 0, 1, 1, 0, 0,
+                                   1, 0, 0, 2, 0, 1, 1, 0,
+                                   1, 1, 0, 0, 2, 0, 1, 1,
+                                   0, 1, 1, 0, 0, 2, 0, 1,
+                                   0, 0, 1, 1, 1, 3, 3, 1,
+                                   0, 0, 0, 0, 1, 3, 3, 1,
                                    0, 0, 0, 0, 1, 1, 1, 1};
 
                 // Posi  o inicial do personagem no console
-                int x = 5, y = 5;
+                int x = 1, y = 1;
                 // Vari vel para tecla precionada
                 char tecla;
 
@@ -274,27 +318,49 @@ int main()
                         cout << "\n";
                     } // fim for mapa
 
-                    /// executa os movimentos
+                    // executa os movimentos
                     if (_kbhit())
                     {
-                        tecla = getch();
+                        tecla = _getch();
+                        int novo_x = x, novo_y = y;
+                        // adiciona variáveis para armazenar coordenadas de caixa adjacente ao jogador
+                        int caixa_x, caixa_y;
+
+                        // define coordenadas de caixa com base na direção do movimento
                         switch (tecla)
                         {
                         case 72:
                         case 'w': /// cima
-                            x--;
+                            caixa_x = novo_x - 1;
+                            caixa_y = novo_y;
+                            novo_x--;
                             break;
                         case 80:
                         case 's': /// baixo
-                            x++;
+                            caixa_x = novo_x + 1;
+                            caixa_y = novo_y;
+                            novo_x++;
                             break;
                         case 75:
                         case 'a': /// esquerda
-                            y--;
+                            caixa_x = novo_x;
+                            caixa_y = novo_y - 1;
+                            novo_y--;
                             break;
                         case 77:
                         case 'd': /// direita
-                            y++;
+                            caixa_x = novo_x;
+                            caixa_y = novo_y + 1;
+                            novo_y++;
+                            break;
+                        }
+
+                        // checa se a nova posição colide com a parede.
+
+                        if (ag13[novo_x][novo_y] != 1)
+                        {
+                            x = novo_x;
+                            y = novo_y;
                         }
                     }
                 }
@@ -356,7 +422,7 @@ int main()
                     /// executa os movimentos
                     if (_kbhit())
                     {
-                        tecla = getch();
+                        tecla = _getch();
                         switch (tecla)
                         {
                         case 72:
@@ -411,66 +477,4 @@ int main()
             break;
         }
     }
-
-    // Mapa do jogo debug
-
-    //     int d[10][10]={ 1,1,1,1,1,1,1,1,1,1,
-    //                     1,0,0,0,0,0,0,0,0,1,
-    //                     1,0,0,0,0,0,0,0,0,1,
-    //                     1,0,0,0,0,0,0,0,0,1,
-    //                     1,0,0,0,0,0,0,0,0,1,
-    //                     1,0,0,0,0,0,0,0,0,1,
-    //                     1,0,0,0,0,0,0,0,0,1,
-    //                     1,0,0,0,0,0,0,0,0,1,
-    //                     1,0,0,0,0,0,0,0,0,1,
-    //                     1,1,1,1,1,1,1,1,1,1 };
-
-    //     //Posi  o inicial do personagem no console
-    //     int x=5, y=5;
-    //     //Vari vel para tecla precionada
-    //     char tecla;
-
-    //     while(true){
-    //         ///Posiciona a escrita no início do console
-    //         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-
-    //         ///Imprime o jogo: mapa e personagem.
-    //         for(int i=0;i<10;i++){
-    //             for(int j=0;j<10;j++){
-    //                 if(i==x && j==y){
-    //                     cout<<char(2); //personagem
-    //                 } else {
-    //                     switch (d[i][j]){
-    //                         case 0: cout<<" "; break; //caminho
-    //                         case 1: cout<<char(219); break; //parede
-    //                         //default: cout<<"-"; //erro
-    //                     } //fim switch
-    //                 }
-    //             }
-    //             cout<<"\n";
-    //         } //fim for mapa
-
-    //         ///executa os movimentos
-    //          if ( _kbhit() ){
-    //             tecla = getch();
-    //             switch(tecla)
-    //             {
-    //                 case 72: case 'w': ///cima
-    //                     x--;
-    //                 break;
-    //                 case 80: case 's': ///baixo
-    //                     x++;
-    //                 break;
-    //                 case 75:case 'a': ///esquerda
-    //                     y--;
-    //                 break;
-    //                 case 77: case 'd': ///direita
-    //                     y++;
-    //                 break;
-    //             }
-    //          }
-
-    //     } //fim do laço do jogo
-
-    //     return 0;
 } // fim main
