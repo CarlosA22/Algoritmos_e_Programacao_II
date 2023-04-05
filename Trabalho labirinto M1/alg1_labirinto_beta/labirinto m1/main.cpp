@@ -8,9 +8,42 @@
 
 using namespace std;
 
-int main()
-{
-    /// ALERTA: N O MODIFICAR O TRECHO DE C DIGO, A SEGUIR.
+void menu(){
+        cout << "S O K O B A N !" << endl;
+        cout << "Escolha uma opcao:" << endl;
+        cout << "1 - Novo Jogo" << endl;
+        cout << "2 - Carregar" << endl;
+        cout << "3 - Sobre" << endl;
+        cout << "4 - Sair" << endl;
+}
+
+void oplvl(){
+        cout << "Escolha um level:" << endl;
+        cout << "Level 1 (Alberto Garcia 1)" << endl;
+        cout << "Level 2 (Alberto Garcia 8)" << endl;
+        cout << "Level 3 (Alberto Garcia 13)" << endl;
+        cout << "???" << endl;
+}
+
+void sobre(){
+        cout << "S O K O B A N !\n";
+        cout << "Versão 0.2\n";
+        cout << "Como jogar: \n";
+        cout << "1 - Mova as caixas para os pontos de destino.\n";
+        cout << "2 - A pontuação é a quantidade de movimentos, quanto mais passos menor a pontuação\n";
+        cout << "3 - Para mover use as teclas WASD\n";
+        cout << "4 - Para voltar ao menu use a tecla ESC\n";
+        cout << "5 - Para voltar onde voce parou selecione a opcao carregar\n";
+        cout << "Para sair desse menu aperte qualquer tecla\n";
+        system("pause");
+}
+
+void def(){
+    cout << "Opcao invalida!" << endl;
+}
+
+void nmecher(COORD &coord){
+        /// ALERTA: N O MODIFICAR O TRECHO DE C DIGO, A SEGUIR.
     // INICIO: COMANDOS PARA QUE O CURSOR N O FIQUE PISCANDO NA TELA
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
@@ -20,11 +53,17 @@ int main()
     // FIM: COMANDOS PARA QUE O CURSOR N O FIQUE PISCANDO NA TELA
     // IN CIO: COMANDOS PARA REPOSICIONAR O CURSOR NO IN CIO DA TELA
     short int CX = 0, CY = 0;
-    COORD coord;
     coord.X = CX;
     coord.Y = CY;
     // FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO IN CIO DA TELA
     /// ALERTA: N O MODIFICAR O TRECHO DE C DIGO, ACIMA.
+}
+
+
+int main()
+{
+    COORD coord;
+    nmecher(coord);
 
     int level1, level2, level3, debug;
     int gameover = 1;
@@ -33,21 +72,12 @@ int main()
 
     while (gameover == 1)
     {
-        cout << "S O K O B A N !" << endl;
-        cout << "Escolha uma opcao:" << endl;
-        cout << "1 - Novo Jogo" << endl;
-        cout << "2 - Carregar" << endl;
-        cout << "3 - Sobre" << endl;
-        cout << "4 - Sair" << endl;
+        menu();
         cin >> opcao;
         switch (opcao)
         {
         case 1:
-            cout << "Escolha um level:" << endl;
-            cout << "Level 1 (Alberto Garcia 1)" << endl;
-            cout << "Level 2 (Alberto Garcia 8)" << endl;
-            cout << "Level 3 (Alberto Garcia 13)" << endl;
-            cout << "???" << endl;
+            oplvl();
             cin >> opcaolvl;
             switch (opcaolvl)
             {
@@ -109,7 +139,7 @@ int main()
 
                     } // fim for mapa
 
-                    // executa os movimentos
+                   // executa os movimentos
                     if (_kbhit())
                     {
                         tecla = _getch();
@@ -423,31 +453,52 @@ int main()
                     if (_kbhit())
                     {
                         tecla = _getch();
+                        int novo_x = x, novo_y = y;
+                        // adiciona variáveis para armazenar coordenadas de caixa adjacente ao jogador
+                        int caixa_x, caixa_y;
+
+                        // define coordenadas de caixa com base na direção do movimento
                         switch (tecla)
                         {
                         case 72:
                         case 'w': /// cima
-                            x--;
+                            caixa_x = novo_x - 1;
+                            caixa_y = novo_y;
+                            novo_x--;
                             break;
                         case 80:
                         case 's': /// baixo
-                            x++;
+                            caixa_x = novo_x + 1;
+                            caixa_y = novo_y;
+                            novo_x++;
                             break;
                         case 75:
                         case 'a': /// esquerda
-                            y--;
+                            caixa_x = novo_x;
+                            caixa_y = novo_y - 1;
+                            novo_y--;
                             break;
                         case 77:
                         case 'd': /// direita
-                            y++;
+                            caixa_x = novo_x;
+                            caixa_y = novo_y + 1;
+                            novo_y++;
                             break;
+                        }
+
+                        // checa se a nova posição colide com a parede.
+
+                        if (d[novo_x][novo_y] != 1)
+                        {
+                            x = novo_x;
+                            y = novo_y;
                         }
                     }
                 }
             } // fim do laço do jogo
             break;
             default:
-                cout << "Opcao invalida!" << endl;
+                def();
                 break;
             }
             break;
@@ -456,16 +507,7 @@ int main()
         // cout << "Carregando..." << endl;
         // break;
         case 3:
-            cout << "S O K O B A N !\n";
-            cout << "Versão 0.2\n";
-            cout << "Como jogar: \n";
-            cout << "1 - Mova as caixas para os pontos de destino.\n";
-            cout << "2 - A pontuação é a quantidade de movimentos, quanto mais passos menor a pontuação\n";
-            cout << "3 - Para mover use as teclas WASD\n";
-            cout << "4 - Para voltar ao menu use a tecla ESC\n";
-            cout << "5 - Para voltar onde voce parou selecione a opcao carregar\n";
-            cout << "Para sair desse menu aperte qualquer tecla\n";
-            system("pause");
+            sobre();
             break;
 
         case 4:
@@ -473,7 +515,7 @@ int main()
             break;
 
         default:
-            cout << "Opcao invalida!" << endl;
+            def();
             break;
         }
     }
