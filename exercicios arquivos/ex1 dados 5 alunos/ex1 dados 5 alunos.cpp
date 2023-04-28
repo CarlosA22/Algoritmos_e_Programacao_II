@@ -19,7 +19,7 @@ int main(){
 
     ofstream alunos;
     alunos.open ("dados_alunos.txt");
-    alunos <<nome<<sexo<<idade<<semestre<<codigo;
+    alunos <<nome<<"\n"<<sexo<<"\n"<<idade<<"\n"<<semestre<<"\n"<<codigo;
     alunos.close();
 
     return 0;
