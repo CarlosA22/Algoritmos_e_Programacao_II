@@ -1,0 +1,4 @@
+a = 1*x²
+b = 2*x
+c = -15
+As raízes são: 3 e -5
