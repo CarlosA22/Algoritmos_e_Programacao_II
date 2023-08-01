@@ -1,6 +1,9 @@
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
+#include <fstream>
+#include <stdlib.h>
+#include <ctime>
 #include "rotinas.h"
 using namespace std;
 

@@ -6,6 +6,71 @@
 #include <conio.h>   //_getch
 #include <fstream>   //arquivo
 #include <stdlib.h>  //random
+#include <ctime>
+
+using namespace std;
+
+struct MAPA
+{
+    const char* arquivo;
+    int posicaox, posicaoy;
+
+    void carregaMAPA(int ag1[10][7], int ag8[10][8], int ag13[10][8], int& x, int& y)
+{
+    ifstream stream;
+    stream.open(arquivo);
+
+    if (stream.is_open())
+    {
+        stream >> posicaox;
+        stream >> posicaoy;
+        x = posicaox;
+        y = posicaoy;
+
+        if (strcmp(arquivo, "AG1.txt") == 0)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    stream >> ag1[i][j];
+                }
+            }
+        }
+        else if (strcmp(arquivo, "AG8.txt") == 0)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    stream >> ag8[i][j];
+                }
+            }
+        }
+        else if (strcmp(arquivo, "AG13.txt") == 0)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    stream >> ag13[i][j];
+                }
+            }
+        }
+        else
+        {
+            cout << "Arquivo de mapa inválido." << endl;
+        }
+    }
+    else
+    {
+        cout << "Erro ao abrir o arquivo" << endl;
+    }
+    stream.close();
+}
+
+
+};
 
 void menu(int m[10][10], int& x, int& y, bool& jogando);
 
@@ -27,8 +92,6 @@ void menu(int m[10][10], int& x, int& y, bool& jogando);
 14  YELLOW
 15  WHITE
 */
-
-using namespace std;
 void posicaoxy(int column, int line)
 {
     COORD coord;
@@ -42,7 +105,6 @@ void mostrarCursor(bool showFlag)
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
 
     CONSOLE_CURSOR_INFO cursorInfo;
-
     GetConsoleCursorInfo(out, &cursorInfo);
     cursorInfo.bVisible = showFlag; // set the cursor visibility
     SetConsoleCursorInfo(out, &cursorInfo);
@@ -54,9 +116,54 @@ void colorir(int cor)
     SetConsoleTextAttribute(out, cor);
 }
 
+// verifica vitória
+bool vitoria(int m[10][10])
+{
+    for (int i = 0; i < 10; i++) // verifica se todas as caixas estão nos destinos
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            if (m[i][j] == 3) // enquanto o destino das caixas existir (não for preenchido), o jogo não concede a vitória.
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+int contador(int m[10][10])
+{
+
+    ofstream aqpassos; // cria o arquivo passos.txt
+    aqpassos.open("passos.txt"); // abre o arquivo passos.txt
+    int contaPassos = 0;
+    int x = 0, y = 0;
+    char tecla;
+    do
+    {
+        if (_kbhit()) {
+            tecla = _getch();
+            if (tecla == 77 || tecla == 75 || tecla == 80 || tecla == 72) {
+                contaPassos++; // conta o número de passos
+                aqpassos << contaPassos << endl; // grava o número de passos no arquivo passos.txt
+
+            }
+
+        }
+    } while (!vitoria(m)); // enquanto o jogo não for vencido, o jogo continua
+    // aqpassos.close(); // fecha o arquivo passos.txt
+    return contaPassos; // retorna o número de passos
+    
+}
+
+
 /// se algum dos símbolos não aparecer (ficar com ?, tente substituir a fonte para Fontes de Varredura em propriedades do console -> fonte
 void imprimir(int m[10][10], int x, int y)
 {
+
+
     for (int i = 0; i < 10; i++)
     {
         for (int j = 0; j < 10; j++)
@@ -99,6 +206,7 @@ void imprimir(int m[10][10], int x, int y)
                     break;
                 }
             }
+
         }
         cout << "\n";
     }
@@ -282,34 +390,30 @@ void selecionar_mapa(int m[10][10], int& x, int& y)
     int selecionar;
     int n_itens = 1;
 
-    cout << "\nSELECIONE: \n1 - Alberto Garcia 1\n2 - Alberto Garcia 8\n3 - Alberto Garcia 13";
+    cout << "\nSELECIONE: \n1 - Alberto Garcia 1\n2 - Alberto Garcia 8\n3 - Alberto Garcia 13\n4 - Aleatório";
     cin >> selecionar;
     if (selecionar == 4)
     {
-        selecionar = rand() / n_itens + 1; // gera um selecionar válido aleatório
+        //selecionar = rand() / n_itens + 1; // gera um selecionar válido aleatório
+        selecionar = rand() % 3 + 1;
     }
     switch (selecionar)
     {
     case 1:
     {
         system("cls");
-        x = 2;
-        y = 1;
-        int AG1[10][7] = { 1, 1, 1, 1, 1, 0, 0,
-                          1, 0, 0, 0, 0, 1, 0,
-                          1, 0, 2, 0, 0, 0, 1,
-                          1, 1, 0, 2, 0, 0, 1,
-                          0, 1, 1, 0, 2, 0, 1,
-                          0, 0, 1, 1, 0, 0, 1,
-                          0, 0, 0, 1, 1, 3, 1,
-                          0, 0, 0, 0, 1, 3, 1,
-                          0, 0, 0, 0, 1, 3, 1,
-                          0, 0, 0, 0, 1, 1, 1 };
+        int ag1[10][7];
+        int ag8 [10][8];
+        int ag13[10][8];
+        MAPA mapa;
+        mapa.arquivo = "AG1.txt";
+        mapa.carregaMAPA(ag1,ag8,ag13,x,y);
+
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 7; j++)
             {
-                m[i][j] = AG1[i][j];
+                m[i][j] = ag1[i][j];
             }
         }
     }
@@ -318,22 +422,18 @@ void selecionar_mapa(int m[10][10], int& x, int& y)
     case 2:
     {
         system("cls");
-        x = 5;
-        y = 1;
-        int AG8[10][8] = { 0, 0, 0, 1, 1, 1, 1, 0,
-                          0, 0, 0, 1, 0, 0, 1, 0,
-                          0, 0, 0, 1, 0, 0, 1, 0,
-                          1, 1, 1, 1, 0, 0, 1, 0,
-                          1, 0, 0, 1, 0, 1, 1, 0,
-                          1, 0, 0, 0, 2, 0, 1, 0,
-                          1, 1, 1, 0, 0, 2, 1, 1,
-                          0, 0, 1, 1, 3, 0, 3, 1,
-                          0, 0, 0, 1, 1, 1, 1, 1 };
+        int ag1[10][7];
+        int ag8[10][8];
+        int ag13[10][8];
+        MAPA mapa;
+        mapa.arquivo = "AG8.txt";
+        mapa.carregaMAPA(ag1, ag8, ag13, x, y);
+
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 8; j++)
             {
-                m[i][j] = AG8[i][j];
+                m[i][j] = ag8[i][j];
             }
         }
     }
@@ -341,56 +441,103 @@ void selecionar_mapa(int m[10][10], int& x, int& y)
     case 3:
     {
         system("cls");
-        x = 1;
-        y = 1;
-        int AG13[10][8] = { 1, 1, 1, 0, 0, 0, 0, 0,
-                           1, 0, 1, 1, 0, 0, 0, 0,
-                           1, 0, 0, 1, 1, 0, 0, 0,
-                           1, 0, 2, 0, 1, 1, 0, 0,
-                           1, 0, 0, 2, 0, 1, 1, 1,
-                           1, 1, 0, 0, 2, 0, 0, 1,
-                           0, 1, 1, 0, 0, 2, 0, 1,
-                           0, 0, 1, 1, 1, 3, 3, 1,
-                           0, 0, 0, 0, 1, 3, 3, 1,
-                           0, 0, 0, 0, 1, 1, 1, 1 };
+        int ag1[10][7];
+        int ag8[10][8];
+        int ag13[10][8];
+        MAPA mapa;
+        mapa.arquivo = "AG13.txt";
+        mapa.carregaMAPA(ag1, ag8, ag13, x, y);
+
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 8; j++)
             {
-                m[i][j] = AG13[i][j];
+                m[i][j] = ag13[i][j];
+            }
+        }
+    }
+    break;
+    case 4:
+    {
+        // Generate a random number between 1 and 3
+        int randomCase = rand() % 3 + 1;
+
+        if (randomCase == 1)
+        {
+            system("cls");
+            int ag1[10][7];
+            int ag8[10][8];
+            int ag13[10][8];
+            MAPA mapa;
+            mapa.arquivo = "AG1.txt";
+            mapa.carregaMAPA(ag1, ag8, ag13, x, y);
+
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    m[i][j] = ag1[i][j];
+                }
+            }
+        }
+        else if (randomCase == 2)
+        {
+            system("cls");
+            int ag1[10][7];
+            int ag8[10][8];
+            int ag13[10][8];
+            MAPA mapa;
+            mapa.arquivo = "AG8.txt";
+            mapa.carregaMAPA(ag1, ag8, ag13, x, y);
+
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    m[i][j] = ag8[i][j];
+                }
+            }
+        }
+        else if (randomCase == 3)
+        {
+            system("cls");
+            int ag1[10][7];
+            int ag8[10][8];
+            int ag13[10][8];
+            MAPA mapa;
+            mapa.arquivo = "AG13.txt";
+            mapa.carregaMAPA(ag1, ag8, ag13, x, y);
+
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    m[i][j] = ag13[i][j];
+                }
             }
         }
     }
     break;
 
+    // ...
+
+
     // fim switch
     system("cls");
     } // fim selecionar
 }
-// verifica vitória
-bool vitoria(int m[10][10])
-{
-    for (int i = 0; i < 10; i++)
-    {
-        for (int j = 0; j < 10; j++)
-        {
-            if (m[i][j] == 3)
-            {
-                return false;
-            }
-        }
-    }
-    return true;
-}
+
 
 void sokoban(int m[10][10], int& x, int& y, bool& jogando)
 {
-
+    int contaPassos = 0;
     while (!vitoria(m))
     {
-        imprimir(m, x, y);
         movimentar(m, x, y);
+        imprimir(m, x, y);
+        //contador(m);
         posicaoxy(0, 0); /// posiciona a escrita no console no eixo x,y. A posição 0,0 é a do canto superior esquerdo.
+
     }
     jogando = false;
     system("cls");
